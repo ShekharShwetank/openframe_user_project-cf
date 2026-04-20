@@ -105,7 +105,13 @@ jobs:
         run: |
           sudo mkdir -p ${{ env.PDK_ROOT }}
           sudo chown -R $USER:$USER ${{ env.PDK_ROOT }}
-          make ${{ matrix.targets }}
+          if [[ "${{ env.dep_name }}" == "pdk" ]]; then
+            python3 -m pip install --upgrade --no-cache-dir ciel
+            export CIEL_DATA_SOURCE=static-web:https://chipfoundry.github.io/ciel-releases
+            ciel enable 3e0e31dcce8519a7dbb82590346db16d91b7244f --pdk-root ${{ env.dep_root }} --pdk sky130A
+          else
+            make ${{ matrix.targets }}
+          fi
           if [[ "${{ env.dep_name }}" == "mgmt_core_wrapper" ]]; then
             cd ${{ env.dep_root }}
             rm -rf gds maglef openlane spi LICENSE manifest docs litex lvs .git
