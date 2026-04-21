@@ -380,7 +380,7 @@ jobs:
             bash -lc "
               pip3 install --no-cache-dir cf-precheck && \
               python3 -m cf_precheck \
-                -i \"$INPUT_DIR\" \
+                -i \"$INPUT_DIRECTORY\" \
                 -p \"$PDK_PATH\" \
                 -c /opt/caravel \
                 -o \"$OUTPUT_DIRECTORY\" 
