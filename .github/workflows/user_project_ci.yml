@@ -27,7 +27,7 @@ jobs:
           echo "CARAVEL_ROOT=$GITHUB_WORKSPACE/caravel" >> $GITHUB_ENV
           echo "MCW_ROOT=$GITHUB_WORKSPACE/mgmt_core_wrapper" >> $GITHUB_ENV
           echo "TIMING_ROOT=$GITHUB_WORKSPACE/timing-scripts" >> $GITHUB_ENV
-          echo "PRECHECK_ROOT=$GITHUB_WORKSPACE/mpw_precheck" >> $GITHUB_ENV
+          #echo "PRECHECK_ROOT=$GITHUB_WORKSPACE/mpw_precheck" >> $GITHUB_ENV
           echo "MPW_TAG=main" >> $GITHUB_ENV
 
       - name: Install Dependencies
@@ -53,7 +53,7 @@ jobs:
     strategy:
       matrix:
         targets:
-          ["pdk-with-volare", "install_mcw", "setup-timing-scripts", "precheck"]
+          ["pdk-with-volare", "install_mcw", "setup-timing-scripts"]
     needs: [download_caravel]
     steps:
       - uses: actions/checkout@v4
@@ -70,7 +70,7 @@ jobs:
           echo "CARAVEL_ROOT=$GITHUB_WORKSPACE/caravel" >> $GITHUB_ENV
           echo "MCW_ROOT=$GITHUB_WORKSPACE/mgmt_core_wrapper" >> $GITHUB_ENV
           echo "TIMING_ROOT=$GITHUB_WORKSPACE/timing-scripts" >> $GITHUB_ENV
-          echo "PRECHECK_ROOT=$GITHUB_WORKSPACE/mpw_precheck" >> $GITHUB_ENV
+          #echo "PRECHECK_ROOT=$GITHUB_WORKSPACE/mpw_precheck" >> $GITHUB_ENV
           echo "MPW_TAG=main" >> $GITHUB_ENV
 
       - name: Get dependencies name
@@ -84,9 +84,9 @@ jobs:
           elif [[ "${{ matrix.targets }}" == "setup-timing-scripts" ]]; then
             echo "dep_name=timing-scripts" >> $GITHUB_ENV
             echo "dep_root=${{ env.TIMING_ROOT }}" >> $GITHUB_ENV
-          elif [[ "${{ matrix.targets }}" == "precheck" ]]; then
-            echo "dep_name=precheck" >> $GITHUB_ENV
-            echo "dep_root=${{ env.PRECHECK_ROOT }}" >> $GITHUB_ENV
+          #elif [[ "${{ matrix.targets }}" == "precheck" ]]; then
+            #echo "dep_name=precheck" >> $GITHUB_ENV
+            #echo "dep_root=${{ env.PRECHECK_ROOT }}" >> $GITHUB_ENV
           fi
 
       - name: Download caravel Tarball
@@ -153,7 +153,7 @@ jobs:
           echo "CARAVEL_ROOT=$GITHUB_WORKSPACE/caravel" >> $GITHUB_ENV
           echo "MCW_ROOT=$GITHUB_WORKSPACE/mgmt_core_wrapper" >> $GITHUB_ENV
           echo "TIMING_ROOT=$GITHUB_WORKSPACE/timing-scripts" >> $GITHUB_ENV
-          echo "PRECHECK_ROOT=$GITHUB_WORKSPACE/mpw_precheck" >> $GITHUB_ENV
+          #echo "PRECHECK_ROOT=$GITHUB_WORKSPACE/mpw_precheck" >> $GITHUB_ENV
           echo "MPW_TAG=main" >> $GITHUB_ENV
 
       - name: Download PDK Tarball
@@ -243,7 +243,7 @@ jobs:
           echo "CARAVEL_ROOT=$GITHUB_WORKSPACE/caravel" >> $GITHUB_ENV
           echo "MCW_ROOT=$GITHUB_WORKSPACE/mgmt_core_wrapper" >> $GITHUB_ENV
           echo "TIMING_ROOT=$GITHUB_WORKSPACE/timing-scripts" >> $GITHUB_ENV
-          echo "PRECHECK_ROOT=$GITHUB_WORKSPACE/mpw_precheck" >> $GITHUB_ENV
+          #echo "PRECHECK_ROOT=$GITHUB_WORKSPACE/mpw_precheck" >> $GITHUB_ENV
           echo "MPW_TAG=main" >> $GITHUB_ENV
 
       - name: Download PDK Tarball
@@ -321,7 +321,7 @@ jobs:
           echo "CARAVEL_ROOT=$GITHUB_WORKSPACE/caravel" >> $GITHUB_ENV
           echo "MCW_ROOT=$GITHUB_WORKSPACE/mgmt_core_wrapper" >> $GITHUB_ENV
           echo "TIMING_ROOT=$GITHUB_WORKSPACE/timing-scripts" >> $GITHUB_ENV
-          echo "PRECHECK_ROOT=$GITHUB_WORKSPACE/mpw_precheck" >> $GITHUB_ENV
+          #echo "PRECHECK_ROOT=$GITHUB_WORKSPACE/mpw_precheck" >> $GITHUB_ENV
           echo "MPW_TAG=main" >> $GITHUB_ENV
 
       - name: Download PDK Tarball
@@ -336,17 +336,17 @@ jobs:
           sudo chown -R $USER:$USER ${{ env.PDK_ROOT }}
           tar -xf /tmp/pdk.tar -C $PDK_ROOT .
 
-      - name: Download precheck Tarball
-        uses: actions/download-artifact@v4
-        with:
-          name: precheck-tarball
-          path: /tmp
+          #- name: Download precheck Tarball
+          #uses: actions/download-artifact@v4
+          #with:
+          #name: precheck-tarball
+          #path: /tmp
 
-      - name: Unpack precheck Tarball
-        run: |
-          sudo mkdir -p ${{ env.PRECHECK_ROOT }}
-          sudo chown -R $USER:$USER ${{ env.PRECHECK_ROOT }}
-          tar -xf /tmp/precheck.tar -C $PRECHECK_ROOT .
+            #- name: Unpack precheck Tarball
+            #run: |
+            #sudo mkdir -p ${{ env.PRECHECK_ROOT }}
+            #sudo chown -R $USER:$USER ${{ env.PRECHECK_ROOT }}
+            #tar -xf /tmp/precheck.tar -C $PRECHECK_ROOT .
 
       - name: Download Design_${{ matrix.pdk }} Tarball
         uses: actions/download-artifact@v4
@@ -364,9 +364,9 @@ jobs:
         run: |
           export INPUT_DIRECTORY=$GITHUB_WORKSPACE
           #export PRECHECK_ROOT=$INPUT_DIRECTORY/mpw_precheck
-          export OUTPUT_DIRECTORY=$INPUT_DIRECTORY/mpw_precheck_result
-          #export OUTPUT=$OUTPUT_DIRECTORY/logs/precheck.log
-          export PDK_PATH=$PDK_ROOT/sky130A
+          export OUTPUT_DIRECTORY=$INPUT_DIRECTORY/precheck_results
+          export OUTPUT=$OUTPUT_DIRECTORY/logs/precheck.log
+          export PDK_PATH=$PDK_ROOT/${{ matrix.pdk }}
 
           docker run --rm \
             -v "$INPUT_DIRECTORY":"$INPUT_DIRECTORY" \
@@ -376,6 +376,7 @@ jobs:
             -e PDKPATH="$PDK_PATH" \
             chipfoundry/mpw_precheck:latest \
             bash -lc "
+              pip3 install --no-cache-dir cf-precheck && \
               python3 -m cf_precheck \
                 -i \"$INPUT_DIR\" \
                 -p \"$PDK_PATH\" \
@@ -387,6 +388,13 @@ jobs:
           if ! [[ $cnt ]]; then cnt=0; fi
           if [[ $cnt -eq 1 ]]; then exit 0; fi
           exit 2
+
+      - name: Upload Precheck results
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: precheck-results-${{ matrix.pdk }}
+          path: ${{ github.workspace }}/precheck_results
 
   STA:
     timeout-minutes: 720
@@ -413,7 +421,7 @@ jobs:
           echo "CARAVEL_ROOT=$GITHUB_WORKSPACE/caravel" >> $GITHUB_ENV
           echo "MCW_ROOT=$GITHUB_WORKSPACE/mgmt_core_wrapper" >> $GITHUB_ENV
           echo "TIMING_ROOT=$GITHUB_WORKSPACE/timing-scripts" >> $GITHUB_ENV
-          echo "PRECHECK_ROOT=$GITHUB_WORKSPACE/mpw_precheck" >> $GITHUB_ENV
+          #echo "PRECHECK_ROOT=$GITHUB_WORKSPACE/mpw_precheck" >> $GITHUB_ENV
           echo "MPW_TAG=main" >> $GITHUB_ENV
 
       - name: Download PDK Tarball
