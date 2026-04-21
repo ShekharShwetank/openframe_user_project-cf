@@ -229,13 +229,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set flag for RTL
+        id: check_rtl_test_file
+        run: |
+          TEST_FILE=$GITHUB_WORKSPACE/verilog/dv/cocotb/user_proj_tests/user_proj_tests.yaml
+          if [[ -f $TEST_FILE ]]; then
+            echo "RUN_RTL=true" >> $GITHUB_ENV
+          else
+            echo "RUN_RTL=false" >> $GITHUB_ENV
+            echo "::warning::Missing $TEST_FILE. Skipping RTL check."
+          fi
+
       - name: Set up QEMU
+        if: env.RUN_RTL == 'true'
         uses: docker/setup-qemu-action@v1
 
       - name: Set up Docker Buildx
+        if: env.RUN_RTL == 'true'
         uses: docker/setup-buildx-action@v1
 
       - name: Export ENVIRONMENT VARIABLES
+        if: env.RUN_RTL == 'true'
         run: |
           echo "PDK=${{ matrix.pdk }}" >> $GITHUB_ENV
           echo "PDKPATH=$GITHUB_WORKSPACE/pdk/${{ matrix.pdk }}" >> $GITHUB_ENV
@@ -248,46 +262,54 @@ jobs:
           echo "MPW_TAG=main" >> $GITHUB_ENV
 
       - name: Download PDK Tarball
+        if: env.RUN_RTL == 'true'
         uses: actions/download-artifact@v4
         with:
           name: pdk-tarball
           path: /tmp
 
       - name: Unpack PDK Tarball
+        if: env.RUN_RTL == 'true'
         run: |
           sudo mkdir -p ${{ env.PDK_ROOT }}
           sudo chown -R $USER:$USER ${{ env.PDK_ROOT }}
           tar -xf /tmp/pdk.tar -C $PDK_ROOT .
 
       - name: Download caravel Tarball
+        if: env.RUN_RTL == 'true'
         uses: actions/download-artifact@v4
         with:
           name: caravel-tarball
           path: /tmp
 
       - name: Unpack caravel Tarball
+        if: env.RUN_RTL == 'true'
         run: |
           sudo mkdir -p ${{ env.CARAVEL_ROOT }}
           sudo chown -R $USER:$USER ${{ env.CARAVEL_ROOT }}
           tar -xf /tmp/caravel.tar -C $CARAVEL_ROOT .
 
       - name: Download mgmt_core_wrapper Tarball
+        if: env.RUN_RTL == 'true'
         uses: actions/download-artifact@v4
         with:
           name: mgmt_core_wrapper-tarball
           path: /tmp
 
       - name: Unpack mgmt_core_wrapper Tarball
+        if: env.RUN_RTL == 'true'
         run: |
           sudo mkdir -p ${{ env.MCW_ROOT }}
           sudo chown -R $USER:$USER ${{ env.MCW_ROOT }}
           tar -xf /tmp/mgmt_core_wrapper.tar -C $MCW_ROOT .
 
       - name: install cocotb
+        if: env.RUN_RTL == 'true'
         run: |
           make setup-cocotb
 
       - name: run RTL verification
+        if: env.RUN_RTL == 'true'
         run: |
           cd $GITHUB_WORKSPACE/verilog/dv/cocotb && $GITHUB_WORKSPACE/venv-cocotb/bin/caravel_cocotb -tl user_proj_tests/user_proj_tests.yaml -verbosity debug --CI -tag rtl_verification
           cnt=$(grep -c "failed" "$GITHUB_WORKSPACE/verilog/dv/cocotb/sim/rtl_verification/runs.log")
@@ -403,13 +425,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set flag for STA
+        id: check_rtl_test_file
+        run: |
+          TEST_FILE=$GITHUB_WORKSPACE/verilog/gl/user_project_wrapper.v
+          if [[ -f $TEST_FILE ]]; then
+            echo "RUN_STA=true" >> $GITHUB_ENV
+          else
+            echo "RUN_STA=false" >> $GITHUB_ENV
+            echo "::warning::Missing $TEST_FILE. Skipping STA check."
+          fi
+
       - name: Set up QEMU
+        if: env.RUN_STA == 'true'
         uses: docker/setup-qemu-action@v1
 
       - name: Set up Docker Buildx
+        if: env.RUN_STA == 'true'
         uses: docker/setup-buildx-action@v1
 
       - name: Export ENVIRONMENT VARIABLES
+        if: env.RUN_STA == 'true'
         run: |
           echo "PDK=${{ matrix.pdk }}" >> $GITHUB_ENV
           echo "PDKPATH=$GITHUB_WORKSPACE/pdk/${{ matrix.pdk }}" >> $GITHUB_ENV
@@ -422,66 +458,77 @@ jobs:
           echo "MPW_TAG=main" >> $GITHUB_ENV
 
       - name: Download PDK Tarball
+        if: env.RUN_STA == 'true'
         uses: actions/download-artifact@v4
         with:
           name: pdk-tarball
           path: /tmp
 
       - name: Unpack PDK Tarball
+        if: env.RUN_STA == 'true'
         run: |
           sudo mkdir -p ${{ env.PDK_ROOT }}
           sudo chown -R $USER:$USER ${{ env.PDK_ROOT }}
           tar -xf /tmp/pdk.tar -C $PDK_ROOT .
 
       - name: Download timing-scripts Tarball
+        if: env.RUN_STA == 'true'
         uses: actions/download-artifact@v4
         with:
           name: timing-scripts-tarball
           path: /tmp
 
       - name: Unpack timing-scripts Tarball
+        if: env.RUN_STA == 'true'
         run: |
           sudo mkdir -p ${{ env.TIMING_ROOT }}
           sudo chown -R $USER:$USER ${{ env.TIMING_ROOT }}
           tar -xf /tmp/timing-scripts.tar -C $TIMING_ROOT .
 
       - name: Download Design_${{ matrix.pdk }} Tarball
+        if: env.RUN_STA == 'true'
         uses: actions/download-artifact@v4
         with:
           name: design_${{ matrix.pdk }}-tarball
           path: /tmp
 
       - name: Unpack Design_${{ matrix.pdk }} Tarball
+        if: env.RUN_STA == 'true'
         run: |
           sudo mkdir -p $GITHUB_WORKSPACE
           sudo chown -R $USER:$USER $GITHUB_WORKSPACE
           tar -xf /tmp/design_${{ matrix.pdk }}.tar -C $GITHUB_WORKSPACE .
 
       - name: Download Caravel Tarball
+        if: env.RUN_STA == 'true'
         uses: actions/download-artifact@v4
         with:
           name: caravel-tarball
           path: /tmp
 
       - name: Unpack Caravel Tarball
+        if: env.RUN_STA == 'true'
         run: |
           sudo mkdir -p ${{ env.CARAVEL_ROOT }}
           sudo chown -R $USER:$USER ${{ env.CARAVEL_ROOT }}
           tar -xf /tmp/caravel.tar -C ${{ env.CARAVEL_ROOT }} .
 
       - name: Download mgmt_core_wrapper Tarball
+        if: env.RUN_STA == 'true'
         uses: actions/download-artifact@v4
         with:
           name: mgmt_core_wrapper-tarball
           path: /tmp
 
       - name: Unpack mgmt_core_wrapper Tarball
+        if: env.RUN_STA == 'true'
         run: |
           sudo mkdir -p ${{ env.MCW_ROOT }}
           sudo chown -R $USER:$USER ${{ env.MCW_ROOT }}
           tar -xf /tmp/mgmt_core_wrapper.tar -C ${{ env.MCW_ROOT }} .
 
       - name: Run STA
+        if: env.RUN_STA == 'true'
         run: |
           export CUP_ROOT=$GITHUB_WORKSPACE
           export PROJECT_ROOT=$GITHUB_WORKSPACE
