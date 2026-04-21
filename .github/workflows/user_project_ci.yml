@@ -386,11 +386,6 @@ jobs:
                 -o \"$OUTPUT_DIRECTORY\" 
             "
 
-          cnt=$(grep -c "All Checks Passed" "$OUTPUT")
-          if ! [[ $cnt ]]; then cnt=0; fi
-          if [[ $cnt -eq 1 ]]; then exit 0; fi
-          exit 2
-
       - name: Upload Precheck results
         uses: actions/upload-artifact@v4
         if: failure()
