@@ -1,15 +1,9 @@
 create_clock -name clk -period $::env(CLOCK_PERIOD) [get_ports {gpio_in[38]}]
-create_clock -name dll_clk -period 6.666 [get_pins {openframe_example/dll/clockp[1]}]
-create_clock -name dll_clk90 -period 6.666 [get_pins {openframe_example/dll/clockp[0]}]
-create_clock -name clk_hkspi_sck -period $::env(CLOCK_PERIOD) [get_ports {gpio_in[4]}]
 
 set_clock_groups \
    -name clock_group \
    -logically_exclusive \
-   -group [get_clocks {clk}]\
-   -group [get_clocks {clk_hkspi_sck}]\
-   -group [get_clocks {dll_clk}]\
-   -group [get_clocks {dll_clk90}]
+   -group [get_clocks {clk}]
 
 set_clock_uncertainty 0.1 [all_clocks]
 set_propagated_clock [all_clocks]
@@ -20,8 +14,6 @@ set output_delay_value 20
 puts "\[INFO\]: Setting output delay to: $output_delay_value"
 puts "\[INFO\]: Setting input delay to: $input_delay_value"
 # set_input_delay $input_delay_value  -clock [get_clocks {clk}] -add_delay [all_inputs]
-set_input_delay 0  -clock [get_clocks {clk}] [get_ports {gpio_in[38]}]
-set_input_delay 0  -clock [get_clocks {clk_hkspi_sck}] [get_ports {gpio_in[4]}]
 
 # set_output_delay $output_delay_value  -clock [get_clocks {clk}] -add_delay [all_outputs]
 
@@ -29,9 +21,8 @@ set_input_delay 0  -clock [get_clocks {clk_hkspi_sck}] [get_ports {gpio_in[4]}]
 set_max_fanout 20 [current_design]
 
 ## FALSE PATHS (ASYNCHRONOUS INPUTS)
-set_false_path -from [get_ports {resetb}]
-set_false_path -from [get_ports {porb}]
-set_false_path -from [get_ports {gpio_in[38]}] -to [get_pins {openframe_example/_34238_/D}]
+set_false_path -from [get_ports {resetb_l}]
+set_false_path -from [get_ports {porb_l}]
 
 # add loads for output ports (pads)
 set min_cap 0.04

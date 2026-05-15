@@ -102,126 +102,166 @@ module openframe_project_wrapper (
     input  [`OPENFRAME_IO_PADS-1:0] gpio_loopback_one,
     input  [`OPENFRAME_IO_PADS-1:0] gpio_loopback_zero
 );
-        wire clk;
-	wire rst;
-	wire [10:0] out;
+        // Internal wires
+        wire spi_csn, spi_sclk, spi_mosi;
+        wire spi_miso, cfg_done, config_busy;
+        wire spi_sclk_o, spi_sclk_en_o, spi_cs_n_o, spi_cs_n_en_o;
+        wire spi_mosi_o, spi_mosi_en_o, spi_miso_o, spi_miso_en_o;
+        wire [35:0] bidir_in, bidir_out, bidir_oe;
+        wire [1:0] fpga_select;  // Routed from GPIO 42-43
 
-	user_proj_timer mprj (
-`ifdef USE_POWER_PINS
-		.vccd1(vccd1),
-		.vssd1(vssd1),
-`endif
-        .wb_clk_i(clk),
-        .wb_rst_i(rst),
-        .io_out(out[10:0])
+        chip_core #(.NUM_BIDIR_PADS(36)) u_chip_core (
+            .clk_i(gpio_in[38]),     // Connected directly to input
+            .rst_ni(resetb_l),
+            .spi_mode_i(1'b1),           // Passive SPI receiver
+            .fpga_select_i(fpga_select), // Dynamic select via GPIO 42-43
+            .spi_sclk_i(spi_sclk), .spi_sclk_o(spi_sclk_o), .spi_sclk_en_o(spi_sclk_en_o),
+            .spi_cs_n_i(spi_csn), .spi_cs_n_o(spi_cs_n_o), .spi_cs_n_en_o(spi_cs_n_en_o),
+            .spi_mosi_i(spi_mosi), .spi_mosi_o(spi_mosi_o), .spi_mosi_en_o(spi_mosi_en_o),
+            .spi_miso_i(1'b0), .spi_miso_o(spi_miso), .spi_miso_en_o(spi_miso_en_o),
+            .config_busy_o(config_busy), .config_done_o(cfg_done),
+            .bidir_in(bidir_in), .bidir_out(bidir_out), .bidir_oe(bidir_oe)
+        );
 
-	    /* NOTE:  Openframe signals not used in picosoc:	*/
-	    /* porb_h:    3.3V domain signal			*/
-	    /* resetb_h:  3.3V domain signal			*/
-	    /* gpio_in_h: 3.3V domain signals			*/
-	    /* analog_io: analog signals			*/
-	    /* analog_noesd_io: analog signals			*/
-	);
+	(* keep *) vccd1_connection vccd1_connection_inst ();
+	(* keep *) vssd1_connection vssd1_connection_inst ();
 
-	(* keep *) vccd1_connection vccd1_connection ();
-	(* keep *) vssd1_connection vssd1_connection ();
+        // CF_gpio_config modes
+        // 0: analog
+        // 1: input
+        // 2: input pull down
+        // 3: input pull up
+        // 4: output
+        // 5: bidirectional
 
-	// CF_gpio_config modes
-	// 0: analog
-	// 1: input
-	// 2: input pull down
-	// 3: input pull up
-	// 4: output
-	// 5: bidirectional
-
-        CF_gpio_config #(.MODE(3'd1)) gpio_clk_config ( // clk input at gpio 0
-          .io_out(),
-          .io_in(clk),
-          .io_oeb(),
-          .gpio_zero(gpio_loopback_zero[0]),
-          .gpio_one(gpio_loopback_one[0]),
-          .gpio_in(gpio_in[0]),
-          .gpio_dm({gpio_dm2[0], gpio_dm1[0], gpio_dm0[0]}),
-          .gpio_inp_dis(gpio_inp_dis[0]),
-          .gpio_oeb_out(gpio_oeb[0]),
-          .gpio_out_val(gpio_out[0]),
-          .gpio_analog_en(gpio_analog_en[0]),
-          .gpio_analog_sel(gpio_analog_sel[0]),
-          .gpio_analog_pol(gpio_analog_pol[0]),
-          .gpio_ib_mode_sel(gpio_ib_mode_sel[0]),
-          .gpio_vtrip_sel(gpio_vtrip_sel[0]),
-          .gpio_slow_sel(gpio_slow_sel[0]),
+        // GPIO 0: spi_csn (Mode 3: input pull-up)
+        CF_gpio_config #(.MODE(3'd3)) gpio_csn_config (
+          .io_out(), .io_in(spi_csn), .io_oeb(),
+          .gpio_zero(gpio_loopback_zero[0]), .gpio_one(gpio_loopback_one[0]),
+          .gpio_in(gpio_in[0]), .gpio_dm({gpio_dm2[0], gpio_dm1[0], gpio_dm0[0]}),
+          .gpio_inp_dis(gpio_inp_dis[0]), .gpio_oeb_out(gpio_oeb[0]), .gpio_out_val(gpio_out[0]),
+          .gpio_analog_en(gpio_analog_en[0]), .gpio_analog_sel(gpio_analog_sel[0]),
+          .gpio_analog_pol(gpio_analog_pol[0]), .gpio_ib_mode_sel(gpio_ib_mode_sel[0]),
+          .gpio_vtrip_sel(gpio_vtrip_sel[0]), .gpio_slow_sel(gpio_slow_sel[0]),
           .gpio_holdover(gpio_holdover[0])
         );
-        
-	CF_gpio_config #(.MODE(3'd3)) gpio_rst_config ( // rst pull up input at gpio 1
-          .io_out(),
-          .io_in(rst),
-          .io_oeb(),
-          .gpio_zero(gpio_loopback_zero[1]),
-          .gpio_one(gpio_loopback_one[1]),
-          .gpio_in(gpio_in[1]),
-          .gpio_dm({gpio_dm2[1], gpio_dm1[1], gpio_dm0[1]}),
-          .gpio_inp_dis(gpio_inp_dis[1]),
-          .gpio_oeb_out(gpio_oeb[1]),
-          .gpio_out_val(gpio_out[1]),
-          .gpio_analog_en(gpio_analog_en[1]),
-          .gpio_analog_sel(gpio_analog_sel[1]),
-          .gpio_analog_pol(gpio_analog_pol[1]),
-          .gpio_ib_mode_sel(gpio_ib_mode_sel[1]),
-          .gpio_vtrip_sel(gpio_vtrip_sel[1]),
-          .gpio_slow_sel(gpio_slow_sel[1]),
+
+        // GPIO 1: spi_sclk (Mode 1: input)
+        CF_gpio_config #(.MODE(3'd1)) gpio_sclk_config (
+          .io_out(), .io_in(spi_sclk), .io_oeb(),
+          .gpio_zero(gpio_loopback_zero[1]), .gpio_one(gpio_loopback_one[1]),
+          .gpio_in(gpio_in[1]), .gpio_dm({gpio_dm2[1], gpio_dm1[1], gpio_dm0[1]}),
+          .gpio_inp_dis(gpio_inp_dis[1]), .gpio_oeb_out(gpio_oeb[1]), .gpio_out_val(gpio_out[1]),
+          .gpio_analog_en(gpio_analog_en[1]), .gpio_analog_sel(gpio_analog_sel[1]),
+          .gpio_analog_pol(gpio_analog_pol[1]), .gpio_ib_mode_sel(gpio_ib_mode_sel[1]),
+          .gpio_vtrip_sel(gpio_vtrip_sel[1]), .gpio_slow_sel(gpio_slow_sel[1]),
           .gpio_holdover(gpio_holdover[1])
         );
 
-	genvar i;
+        // GPIO 2: spi_mosi (Mode 1: input)
+        CF_gpio_config #(.MODE(3'd1)) gpio_mosi_config (
+          .io_out(), .io_in(spi_mosi), .io_oeb(),
+          .gpio_zero(gpio_loopback_zero[2]), .gpio_one(gpio_loopback_one[2]),
+          .gpio_in(gpio_in[2]), .gpio_dm({gpio_dm2[2], gpio_dm1[2], gpio_dm0[2]}),
+          .gpio_inp_dis(gpio_inp_dis[2]), .gpio_oeb_out(gpio_oeb[2]), .gpio_out_val(gpio_out[2]),
+          .gpio_analog_en(gpio_analog_en[2]), .gpio_analog_sel(gpio_analog_sel[2]),
+          .gpio_analog_pol(gpio_analog_pol[2]), .gpio_ib_mode_sel(gpio_ib_mode_sel[2]),
+          .gpio_vtrip_sel(gpio_vtrip_sel[2]), .gpio_slow_sel(gpio_slow_sel[2]),
+          .gpio_holdover(gpio_holdover[2])
+        );
+
+        // GPIO 3: spi_miso (Mode 4: output)
+        CF_gpio_config #(.MODE(3'd4)) gpio_miso_config (
+          .io_out(spi_miso), .io_in(), .io_oeb(1'b0),
+          .gpio_zero(gpio_loopback_zero[3]), .gpio_one(gpio_loopback_one[3]),
+          .gpio_in(gpio_in[3]), .gpio_dm({gpio_dm2[3], gpio_dm1[3], gpio_dm0[3]}),
+          .gpio_inp_dis(gpio_inp_dis[3]), .gpio_oeb_out(gpio_oeb[3]), .gpio_out_val(gpio_out[3]),
+          .gpio_analog_en(gpio_analog_en[3]), .gpio_analog_sel(gpio_analog_sel[3]),
+          .gpio_analog_pol(gpio_analog_pol[3]), .gpio_ib_mode_sel(gpio_ib_mode_sel[3]),
+          .gpio_vtrip_sel(gpio_vtrip_sel[3]), .gpio_slow_sel(gpio_slow_sel[3]),
+          .gpio_holdover(gpio_holdover[3])
+        );
+
+        // GPIO 4: cfg_done (Mode 4: output)
+        CF_gpio_config #(.MODE(3'd4)) gpio_cfg_done_config (
+          .io_out(cfg_done), .io_in(), .io_oeb(1'b0),
+          .gpio_zero(gpio_loopback_zero[4]), .gpio_one(gpio_loopback_one[4]),
+          .gpio_in(gpio_in[4]), .gpio_dm({gpio_dm2[4], gpio_dm1[4], gpio_dm0[4]}),
+          .gpio_inp_dis(gpio_inp_dis[4]), .gpio_oeb_out(gpio_oeb[4]), .gpio_out_val(gpio_out[4]),
+          .gpio_analog_en(gpio_analog_en[4]), .gpio_analog_sel(gpio_analog_sel[4]),
+          .gpio_analog_pol(gpio_analog_pol[4]), .gpio_ib_mode_sel(gpio_ib_mode_sel[4]),
+          .gpio_vtrip_sel(gpio_vtrip_sel[4]), .gpio_slow_sel(gpio_slow_sel[4]),
+          .gpio_holdover(gpio_holdover[4])
+        );
+
+        // GPIO 5-37: bidir[0:32] (Mode 5: bidirectional)
+        genvar i;
         generate
-          for (i = 0; i <= 10; i = i + 1) begin : gpio_out_config
-            CF_gpio_config #(.MODE(3'd4)) u_cfg (
-              .io_out(out[i]),
-              .io_in(),
-              .io_oeb(),
-              .gpio_zero(gpio_loopback_zero[i + 2]),
-              .gpio_one(gpio_loopback_one[i + 2]),
-              .gpio_in(gpio_in[i + 2]),
-              .gpio_dm({gpio_dm2[i + 2], gpio_dm1[i + 2], gpio_dm0[i + 2]}),
-              .gpio_inp_dis(gpio_inp_dis[i + 2]),
-              .gpio_oeb_out(gpio_oeb[i + 2]),
-              .gpio_out_val(gpio_out[i + 2]),
-              .gpio_analog_en(gpio_analog_en[i + 2]),
-              .gpio_analog_sel(gpio_analog_sel[i + 2]),
-              .gpio_analog_pol(gpio_analog_pol[i + 2]),
-              .gpio_ib_mode_sel(gpio_ib_mode_sel[i + 2]),
-              .gpio_vtrip_sel(gpio_vtrip_sel[i + 2]),
-              .gpio_slow_sel(gpio_slow_sel[i + 2]),
-              .gpio_holdover(gpio_holdover[i + 2])
+          for (i = 5; i <= 37; i = i + 1) begin : gpio_bidir_0_32
+            CF_gpio_config #(.MODE(3'd5)) u_cfg (
+              .io_out(bidir_out[i-5]), .io_in(bidir_in[i-5]), .io_oeb(~bidir_oe[i-5]),
+              .gpio_zero(gpio_loopback_zero[i]), .gpio_one(gpio_loopback_one[i]),
+              .gpio_in(gpio_in[i]), .gpio_dm({gpio_dm2[i], gpio_dm1[i], gpio_dm0[i]}),
+              .gpio_inp_dis(gpio_inp_dis[i]), .gpio_oeb_out(gpio_oeb[i]), .gpio_out_val(gpio_out[i]),
+              .gpio_analog_en(gpio_analog_en[i]), .gpio_analog_sel(gpio_analog_sel[i]),
+              .gpio_analog_pol(gpio_analog_pol[i]), .gpio_ib_mode_sel(gpio_ib_mode_sel[i]),
+              .gpio_vtrip_sel(gpio_vtrip_sel[i]), .gpio_slow_sel(gpio_slow_sel[i]),
+              .gpio_holdover(gpio_holdover[i])
             );
           end
         endgenerate
 
+        // GPIO 38: clk (Mode 1: input)
+        CF_gpio_config #(.MODE(3'd1)) gpio_clk_config (
+          .io_out(), .io_in(), .io_oeb(), // clk uses gpio_in[38] directly
+          .gpio_zero(gpio_loopback_zero[38]), .gpio_one(gpio_loopback_one[38]),
+          .gpio_in(gpio_in[38]), .gpio_dm({gpio_dm2[38], gpio_dm1[38], gpio_dm0[38]}),
+          .gpio_inp_dis(gpio_inp_dis[38]), .gpio_oeb_out(gpio_oeb[38]), .gpio_out_val(gpio_out[38]),
+          .gpio_analog_en(gpio_analog_en[38]), .gpio_analog_sel(gpio_analog_sel[38]),
+          .gpio_analog_pol(gpio_analog_pol[38]), .gpio_ib_mode_sel(gpio_ib_mode_sel[38]),
+          .gpio_vtrip_sel(gpio_vtrip_sel[38]), .gpio_slow_sel(gpio_slow_sel[38]),
+          .gpio_holdover(gpio_holdover[38])
+        );
+
+        // GPIO 39-41: bidir[33:35] (Mode 5: bidirectional)
         genvar j;
         generate
-          for (j = 13; j < `OPENFRAME_IO_PADS; j = j + 1) begin : gpio_unused
-            CF_gpio_config #(.MODE(3'd0)) u_cfg (
-              .io_out(),
-              .io_in(),
-              .io_oeb(),
-              .gpio_zero(gpio_loopback_zero[j]),
-              .gpio_one(gpio_loopback_one[j]),
-              .gpio_in(gpio_in[j]),
-              .gpio_dm({gpio_dm2[j], gpio_dm1[j], gpio_dm0[j]}),
-              .gpio_inp_dis(gpio_inp_dis[j]),
-              .gpio_oeb_out(gpio_oeb[j]),
-              .gpio_out_val(gpio_out[j]),
-              .gpio_analog_en(gpio_analog_en[j]),
-              .gpio_analog_sel(gpio_analog_sel[j]),
-              .gpio_analog_pol(gpio_analog_pol[j]),
-              .gpio_ib_mode_sel(gpio_ib_mode_sel[j]),
-              .gpio_vtrip_sel(gpio_vtrip_sel[j]),
-              .gpio_slow_sel(gpio_slow_sel[j]),
+          for (j = 39; j <= 41; j = j + 1) begin : gpio_bidir_33_35
+            CF_gpio_config #(.MODE(3'd5)) u_cfg (
+              .io_out(bidir_out[j-6]), .io_in(bidir_in[j-6]), .io_oeb(~bidir_oe[j-6]),
+              .gpio_zero(gpio_loopback_zero[j]), .gpio_one(gpio_loopback_one[j]),
+              .gpio_in(gpio_in[j]), .gpio_dm({gpio_dm2[j], gpio_dm1[j], gpio_dm0[j]}),
+              .gpio_inp_dis(gpio_inp_dis[j]), .gpio_oeb_out(gpio_oeb[j]), .gpio_out_val(gpio_out[j]),
+              .gpio_analog_en(gpio_analog_en[j]), .gpio_analog_sel(gpio_analog_sel[j]),
+              .gpio_analog_pol(gpio_analog_pol[j]), .gpio_ib_mode_sel(gpio_ib_mode_sel[j]),
+              .gpio_vtrip_sel(gpio_vtrip_sel[j]), .gpio_slow_sel(gpio_slow_sel[j]),
               .gpio_holdover(gpio_holdover[j])
             );
           end
         endgenerate
+
+        // GPIO 42: fpga_select[0] (Mode 1: input)
+        CF_gpio_config #(.MODE(3'd1)) gpio_fpga_sel0_config (
+          .io_out(), .io_in(fpga_select[0]), .io_oeb(),
+          .gpio_zero(gpio_loopback_zero[42]), .gpio_one(gpio_loopback_one[42]),
+          .gpio_in(gpio_in[42]), .gpio_dm({gpio_dm2[42], gpio_dm1[42], gpio_dm0[42]}),
+          .gpio_inp_dis(gpio_inp_dis[42]), .gpio_oeb_out(gpio_oeb[42]), .gpio_out_val(gpio_out[42]),
+          .gpio_analog_en(gpio_analog_en[42]), .gpio_analog_sel(gpio_analog_sel[42]),
+          .gpio_analog_pol(gpio_analog_pol[42]), .gpio_ib_mode_sel(gpio_ib_mode_sel[42]),
+          .gpio_vtrip_sel(gpio_vtrip_sel[42]), .gpio_slow_sel(gpio_slow_sel[42]),
+          .gpio_holdover(gpio_holdover[42])
+        );
+
+        // GPIO 43: fpga_select[1] (Mode 1: input)
+        CF_gpio_config #(.MODE(3'd1)) gpio_fpga_sel1_config (
+          .io_out(), .io_in(fpga_select[1]), .io_oeb(),
+          .gpio_zero(gpio_loopback_zero[43]), .gpio_one(gpio_loopback_one[43]),
+          .gpio_in(gpio_in[43]), .gpio_dm({gpio_dm2[43], gpio_dm1[43], gpio_dm0[43]}),
+          .gpio_inp_dis(gpio_inp_dis[43]), .gpio_oeb_out(gpio_oeb[43]), .gpio_out_val(gpio_out[43]),
+          .gpio_analog_en(gpio_analog_en[43]), .gpio_analog_sel(gpio_analog_sel[43]),
+          .gpio_analog_pol(gpio_analog_pol[43]), .gpio_ib_mode_sel(gpio_ib_mode_sel[43]),
+          .gpio_vtrip_sel(gpio_vtrip_sel[43]), .gpio_slow_sel(gpio_slow_sel[43]),
+          .gpio_holdover(gpio_holdover[43])
+        );
 
 endmodule	// openframe_project_wrapper

@@ -1,11 +1,9 @@
 create_clock -name clk -period $::env(CLOCK_PERIOD) [get_ports {gpio_in[38]}]
-create_clock -name clk_hkspi_sck -period $::env(CLOCK_PERIOD) [get_ports {gpio_in[4]}]
 
 set_clock_groups \
    -name clock_group \
    -logically_exclusive \
-   -group [get_clocks {clk}]\
-   -group [get_clocks {clk_hkspi_sck}]
+   -group [get_clocks {clk}]
 
 set_clock_uncertainty 0.8 [all_clocks]
 set_propagated_clock [all_clocks]
@@ -16,8 +14,8 @@ set output_delay_value 22
 puts "\[INFO\]: Setting output delay to: $output_delay_value"
 puts "\[INFO\]: Setting input delay to: $input_delay_value"
 set_input_delay $input_delay_value  -clock [get_clocks {clk}] -add_delay [all_inputs]
-set_input_delay 0  -clock [get_clocks {clk}] [get_ports {gpio_in[38]}]
-set_input_delay 0  -clock [get_clocks {clk_hkspi_sck}] [get_ports {gpio_in[4]}]
+#set_input_delay 0  -clock [get_clocks {clk}] [get_ports {gpio_in[38]}]
+#set_input_delay 0  -clock [get_clocks {clk_hkspi_sck}] [get_ports {gpio_in[4]}]
 
 set_output_delay $output_delay_value  -clock [get_clocks {clk}] -add_delay [all_outputs]
 
