@@ -20,26 +20,51 @@
     ],
     "MACROS": {
         "classic_fabric_chipfoundry_small": {
-            "gds": ["dir::../../ip/small_fabric/gds/classic_fabric_chipfoundry_small.gds"],
-            "lef": ["dir::../../ip/small_fabric/lef/classic_fabric_chipfoundry_small.lef"]
+            "gds": [
+                "dir::../../ip/small_fabric/gds/classic_fabric_chipfoundry_small.gds"
+            ],
+            "lef": [
+                "dir::../../ip/small_fabric/lef/classic_fabric_chipfoundry_small.lef"
+            ]
         },
         "classic_fabric_chipfoundry_medium": {
-            "gds": ["dir::../../ip/medium_fabric/gds/classic_fabric_chipfoundry_medium.gds"],
-            "lef": ["dir::../../ip/medium_fabric/lef/classic_fabric_chipfoundry_medium.lef"]
+            "gds": [
+                "dir::../../ip/medium_fabric/gds/classic_fabric_chipfoundry_medium.gds"
+            ],
+            "lef": [
+                "dir::../../ip/medium_fabric/lef/classic_fabric_chipfoundry_medium.lef"
+            ]
         },
         "classic_fabric_chipfoundry_large": {
-            "gds": ["dir::../../ip/large_fabric/gds/classic_fabric_chipfoundry_large.gds"],
-            "lef": ["dir::../../ip/large_fabric/lef/classic_fabric_chipfoundry_large.lef"]
+            "gds": [
+                "dir::../../ip/large_fabric/gds/classic_fabric_chipfoundry_large.gds"
+            ],
+            "lef": [
+                "dir::../../ip/large_fabric/lef/classic_fabric_chipfoundry_large.lef"
+            ]
         },
         "vccd1_connection": {
-            "gds": ["dir::../../gds/vccd1_connection.gds"],
-            "lef": ["dir::../../lef/vccd1_connection.lef"]
+            "gds": [
+                "dir::../../gds/vccd1_connection.gds"
+            ],
+            "lef": [
+                "dir::../../lef/vccd1_connection.lef"
+            ]
         },
         "vssd1_connection": {
-            "gds": ["dir::../../gds/vssd1_connection.gds"],
-            "lef": ["dir::../../lef/vssd1_connection.lef"]
+            "gds": [
+                "dir::../../gds/vssd1_connection.gds"
+            ],
+            "lef": [
+                "dir::../../lef/vssd1_connection.lef"
+            ]
         }
     },
+    "IGNORE_DISCONNECTED_MODULES": [
+        "vccd1_connection",
+        "vssd1_connection",
+        "sky130_fd_sc_hd__conb_1"
+    ],
     "MAX_TRANSITION_CONSTRAINT": 0.5,
     "ERROR_ON_NL_ASSIGN_STATEMENTS": 0,
     "QUIT_ON_SYNTH_CHECKS": 0,
@@ -60,24 +85,30 @@
     "RUN_TAP_DECAP_INSERTION": 1,
     "CLOCK_PORT": "gpio_in[38]",
     "CLOCK_PERIOD": 40.0,
+    "PL_TARGET_DENSITY_PCT": 40,
+    "GRT_ALLOW_CONGESTION": 1,
+    "PL_MACRO_HALO": [
+        40,
+        40
+    ],
     "PNR_SDC_FILE": "dir::base.sdc",
     "SIGNOFF_SDC_FILE": "dir::signoff.sdc",
-    "FP_PDN_VPITCH": 40,
-    "FP_PDN_HPITCH": 40,
+    "FP_PDN_VPITCH": 80,
+    "FP_PDN_HPITCH": 100,
     "FP_PDN_VOFFSET": 18.43,
     "FP_PDN_HOFFSET": 22.83,
     "MAGIC_ZEROIZE_ORIGIN": 0,
     "FP_SIZING": "absolute",
     "RUN_CVC": 0,
     "FP_PDN_CORE_RING": 1,
-    "FP_PDN_CORE_RING_VWIDTH": 20,
-    "FP_PDN_CORE_RING_HWIDTH": 20,
+    "FP_PDN_CORE_RING_VWIDTH": 15,
+    "FP_PDN_CORE_RING_HWIDTH": 15,
     "FP_PDN_CORE_RING_VOFFSET": -4,
     "FP_PDN_CORE_RING_HOFFSET": -4,
-    "FP_PDN_CORE_RING_VSPACING": 2.4,
-    "FP_PDN_CORE_RING_HSPACING": 2.4,
-    "FP_PDN_VWIDTH": 6.4,
-    "FP_PDN_HWIDTH": 6.4,
+    "FP_PDN_CORE_RING_VSPACING": 5,
+    "FP_PDN_CORE_RING_HSPACING": 5,
+    "FP_PDN_VWIDTH": 1.6,
+    "FP_PDN_HWIDTH": 3.2,
     "FP_PDN_HSPACING": 3.2,
     "FP_PDN_VSPACING": 3.2,
     "VDD_NETS": [
