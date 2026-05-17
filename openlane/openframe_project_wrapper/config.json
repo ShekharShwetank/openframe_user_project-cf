@@ -65,7 +65,7 @@
         "vssd1_connection",
         "sky130_fd_sc_hd__conb_1"
     ],
-    "MAX_TRANSITION_CONSTRAINT": 0.5,
+    "MAX_TRANSITION_CONSTRAINT": 1.5,
     "ERROR_ON_NL_ASSIGN_STATEMENTS": 0,
     "QUIT_ON_SYNTH_CHECKS": 0,
     "FP_PDN_CHECK_NODES": 0,
@@ -85,16 +85,17 @@
     "RUN_TAP_DECAP_INSERTION": 1,
     "CLOCK_PORT": "gpio_in[38]",
     "CLOCK_PERIOD": 40.0,
-    "PL_TARGET_DENSITY_PCT": 40,
+    "PL_TARGET_DENSITY_PCT": 20,
     "GRT_ALLOW_CONGESTION": 1,
+    "GRT_OVERFLOW_ITERATIONS": 120,
     "PL_MACRO_HALO": [
-        40,
-        40
+        10,
+        10
     ],
     "PNR_SDC_FILE": "dir::base.sdc",
     "SIGNOFF_SDC_FILE": "dir::signoff.sdc",
-    "FP_PDN_VPITCH": 80,
-    "FP_PDN_HPITCH": 100,
+    "FP_PDN_VPITCH": 160,
+    "FP_PDN_HPITCH": 200,
     "FP_PDN_VOFFSET": 18.43,
     "FP_PDN_HOFFSET": 22.83,
     "MAGIC_ZEROIZE_ORIGIN": 0,
