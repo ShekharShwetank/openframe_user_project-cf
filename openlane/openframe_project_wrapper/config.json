@@ -1,6 +1,9 @@
 {
     "DESIGN_NAME": "openframe_project_wrapper",
-    "VERILOG_DEFINES": "PnR",
+    "VERILOG_DEFINES": [
+        "PnR",
+        "REMOVE_SMALL_FABRIC"
+    ],
     "VERILOG_FILES": [
         "dir::../../verilog/rtl/openframe_project_netlists.v",
         "dir::../../verilog/rtl/openframe_project_wrapper.v",
@@ -12,21 +15,12 @@
         "dir::../../verilog/rtl/fabulous/fabric_config.sv"
     ],
     "VERILOG_FILES_BLACKBOX": [
-        "dir::../../ip/small_fabric/vh/classic_fabric_chipfoundry_small.vh",
         "dir::../../ip/medium_fabric/vh/classic_fabric_chipfoundry_medium.vh",
         "dir::../../ip/large_fabric/vh/classic_fabric_chipfoundry_large.vh",
         "dir::../../verilog/gl/vccd1_connection.v",
         "dir::../../verilog/gl/vssd1_connection.v"
     ],
     "MACROS": {
-        "classic_fabric_chipfoundry_small": {
-            "gds": [
-                "dir::../../ip/small_fabric/gds/classic_fabric_chipfoundry_small.gds"
-            ],
-            "lef": [
-                "dir::../../ip/small_fabric/lef/classic_fabric_chipfoundry_small.lef"
-            ]
-        },
         "classic_fabric_chipfoundry_medium": {
             "gds": [
                 "dir::../../ip/medium_fabric/gds/classic_fabric_chipfoundry_medium.gds"
@@ -121,7 +115,7 @@
     "DIE_AREA": "0 0 3166.63 4766.630",
     "CORE_AREA": "40 40 3126.63 4726.630",
     "RUN_IRDROP_REPORT": 0,
-    "FP_PDN_MACRO_HOOKS": "u_chip_core\\.i_classic_fabric_chipfoundry_small vccd1 vssd1 VPWR VGND,u_chip_core\\.i_classic_fabric_chipfoundry_medium vccd1 vssd1 VPWR VGND,u_chip_core\\.i_classic_fabric_chipfoundry_large vccd1 vssd1 VPWR VGND",
+    "FP_PDN_MACRO_HOOKS": "u_chip_core\\.i_classic_fabric_chipfoundry_medium vccd1 vssd1 VPWR VGND,u_chip_core\\.i_classic_fabric_chipfoundry_large vccd1 vssd1 VPWR VGND",
     "FP_PDN_CFG": "dir::pdn_cfg.tcl",
     "FP_DEF_TEMPLATE": "dir::fixed_dont_change/openframe_project_wrapper.def",
     "MACRO_PLACEMENT_CFG": "dir::macro.cfg",

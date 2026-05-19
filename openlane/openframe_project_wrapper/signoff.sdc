@@ -24,6 +24,9 @@ set_max_fanout 20 [current_design]
 set_false_path -from [get_ports {resetb_l}]
 set_false_path -from [get_ports {porb_l}]
 
+# Source fabric timing constraints and false paths
+source $::env(DESIGN_DIR)/fabrics.sdc
+
 # add loads for output ports (pads)
 set min_cap 0.04
 set max_cap 0.04
