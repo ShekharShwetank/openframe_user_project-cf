@@ -110,6 +110,10 @@ module openframe_project_wrapper (
         wire [35:0] bidir_in, bidir_out, bidir_oe;
         wire [1:0] fpga_select;  // Routed from GPIO 42-43
 
+        // CF_owire_id_shared wires (1-Wire chip-ID on GPIO[0])
+        wire owire_user_in;
+        wire owire_ip_busy;
+
         chip_core #(.NUM_BIDIR_PADS(36)) u_chip_core (
             .clk_i(gpio_in[38]),     // Connected directly to input
             .rst_ni(resetb_l),
@@ -127,17 +131,35 @@ module openframe_project_wrapper (
 	(* keep *) vssd1_connection vssd1_connection_inst ();
 
         // CF_gpio_config modes
-        // GPIO 0: bidir[0] (Mode 5: bidirectional)
-        CF_gpio_config #(.MODE(3'd5)) gpio_0_config (
-          .io_out(bidir_out[0]), .io_in(bidir_in[0]), .io_oeb(~bidir_oe[0]),
-          .gpio_zero(gpio_loopback_zero[0]), .gpio_one(gpio_loopback_one[0]),
-          .gpio_in(gpio_in[0]), .gpio_dm({gpio_dm2[0], gpio_dm1[0], gpio_dm0[0]}),
-          .gpio_inp_dis(gpio_inp_dis[0]), .gpio_oeb_out(gpio_oeb[0]), .gpio_out_val(gpio_out[0]),
-          .gpio_analog_en(gpio_analog_en[0]), .gpio_analog_sel(gpio_analog_sel[0]),
-          .gpio_analog_pol(gpio_analog_pol[0]), .gpio_ib_mode_sel(gpio_ib_mode_sel[0]),
-          .gpio_vtrip_sel(gpio_vtrip_sel[0]), .gpio_slow_sel(gpio_slow_sel[0]),
-          .gpio_holdover(gpio_holdover[0])
+        // GPIO 0: CF_owire_id_shared (1-Wire chip-ID + fabric bidir[0] open-drain sharing)
+        // Fabric pulls low when actively driving a 0; reads wire level via owire_user_in.
+        CF_owire_id_shared #(
+            .FAMILY_CODE        (8'hCF),
+            .SERIAL_HIGH        (16'hCF1D)
+        ) u_owire_shared (
+            .rst_n              (resetb_l),
+            .mask_rev           (mask_rev),
+            .user_pull_low      (bidir_oe[0] & ~bidir_out[0]),
+            .user_in            (owire_user_in),
+            .ip_busy            (owire_ip_busy),
+            .gpio_in_pin        (gpio_in[0]),
+            .gpio_out_pin       (gpio_out[0]),
+            .gpio_oeb_pin       (gpio_oeb[0]),
+            .gpio_inp_dis_pin   (gpio_inp_dis[0]),
+            .gpio_dm2_pin       (gpio_dm2[0]),
+            .gpio_dm1_pin       (gpio_dm1[0]),
+            .gpio_dm0_pin       (gpio_dm0[0]),
+            .gpio_analog_en_pin (gpio_analog_en[0]),
+            .gpio_analog_sel_pin(gpio_analog_sel[0]),
+            .gpio_analog_pol_pin(gpio_analog_pol[0]),
+            .gpio_ib_mode_sel_pin(gpio_ib_mode_sel[0]),
+            .gpio_vtrip_sel_pin (gpio_vtrip_sel[0]),
+            .gpio_slow_sel_pin  (gpio_slow_sel[0]),
+            .gpio_holdover_pin  (gpio_holdover[0])
         );
+
+        // Feed wire level back to fabric bidir[0] input
+        assign bidir_in[0] = owire_user_in;
 
         // GPIO 1: bidir[1] (Mode 5: bidirectional)
         CF_gpio_config #(.MODE(3'd5)) gpio_1_config (
