@@ -344,7 +344,6 @@ module chip_core #(
     wire config_done_medium;
     wire config_done_large;
 
-`ifndef REMOVE_SMALL_FABRIC
     fabric_config #(
         .FABRIC_NUM_COLUMNS (FABRIC_SMALL_NUM_COLUMNS),
         .FABRIC_NUM_ROWS    (FABRIC_SMALL_NUM_ROWS)
@@ -366,13 +365,8 @@ module chip_core #(
         .frame_data_o   (frame_data_small),
         .frame_strobe_o (frame_strobe_small)
     );
-`else
-    assign config_busy_small = 1'b0;
-    assign config_done_small = 1'b0;
-    assign frame_data_small = '0;
-    assign frame_strobe_small = '0;
-`endif
     
+`ifndef REMOVE_MEDIUM_FABRIC
     fabric_config #(
         .FABRIC_NUM_COLUMNS (FABRIC_MEDIUM_NUM_COLUMNS),
         .FABRIC_NUM_ROWS    (FABRIC_MEDIUM_NUM_ROWS)
@@ -394,6 +388,12 @@ module chip_core #(
         .frame_data_o   (frame_data_medium),
         .frame_strobe_o (frame_strobe_medium)
     );
+`else
+    assign config_busy_medium = 1'b0;
+    assign config_done_medium = 1'b0;
+    assign frame_data_medium = '0;
+    assign frame_strobe_medium = '0;
+`endif
     
     fabric_config #(
         .FABRIC_NUM_COLUMNS (FABRIC_LARGE_NUM_COLUMNS),
@@ -464,7 +464,6 @@ module chip_core #(
             print(f".Tile_X5Y{1+i}_{bel}_EN_top  ({fabric}_io_east_oe_o[{i*2+j}]),")
     */
     
-`ifndef REMOVE_SMALL_FABRIC
     classic_fabric_chipfoundry_small i_classic_fabric_chipfoundry_small (
         .FrameData            (frame_data_small),
         .FrameStrobe          (frame_strobe_small),
@@ -544,13 +543,8 @@ module chip_core #(
         .Tile_X5Y6_B_IN_top  (small_io_east_out_o[11]),
         .Tile_X5Y6_B_EN_top  (small_io_east_oe_o[11])
     );
-`else
-    assign small_io_west_out_o = '0;
-    assign small_io_west_oe_o  = '0;
-    assign small_io_east_out_o = '0;
-    assign small_io_east_oe_o  = '0;
-`endif
 
+`ifndef REMOVE_MEDIUM_FABRIC
     classic_fabric_chipfoundry_medium i_classic_fabric_chipfoundry_medium (
         .FrameData            (frame_data_medium),
         .FrameStrobe          (frame_strobe_medium),
@@ -630,6 +624,12 @@ module chip_core #(
         .Tile_X9Y6_B_IN_top  (medium_io_east_out_o[11]),
         .Tile_X9Y6_B_EN_top  (medium_io_east_oe_o[11])
     );
+`else
+    assign medium_io_west_out_o = '0;
+    assign medium_io_west_oe_o  = '0;
+    assign medium_io_east_out_o = '0;
+    assign medium_io_east_oe_o  = '0;
+`endif
     
     classic_fabric_chipfoundry_large i_classic_fabric_chipfoundry_large (
         .FrameData            (frame_data_large),

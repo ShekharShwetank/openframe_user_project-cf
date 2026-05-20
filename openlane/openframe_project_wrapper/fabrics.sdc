@@ -60,7 +60,7 @@ for {set i 0} {$i < 44} {incr i} {
 puts "\[INFO\]: Sourcing fabrics.sdc - Configuring false paths for fabric macro instances..."
 
 set fabric_instances {
-    "u_chip_core.i_classic_fabric_chipfoundry_medium"
+    "u_chip_core.i_classic_fabric_chipfoundry_small"
     "u_chip_core.i_classic_fabric_chipfoundry_large"
 }
 
