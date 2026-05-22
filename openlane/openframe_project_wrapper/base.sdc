@@ -5,7 +5,7 @@ set_clock_groups \
    -logically_exclusive \
    -group [get_clocks {clk}]
 
-set_clock_uncertainty 0.25 [all_clocks]
+set_clock_uncertainty 0.8 [all_clocks]
 set_propagated_clock [all_clocks]
 
 ## INPUT/OUTPUT DELAYS
@@ -44,13 +44,13 @@ set_input_transition -min $min_in_tran [all_inputs]
 set_input_transition -max $max_in_tran [all_inputs]
 
 # derates
-set derate 0.05
+set derate 0.15
 puts "\[INFO\]: Setting derate factor to: [expr $derate * 100] %"
 set_timing_derate -early [expr 1-$derate]
 set_timing_derate -late [expr 1+$derate]
 
 ## MAX transition/cap
-set_max_trans 1.5 [current_design]
+set_max_trans 0.5 [current_design]
 # set_max_cap 0.5 [current_design]
 
 # group_path -weight 100 -through [get_pins mprj/la_data_out[0]] -name mprj_floating
