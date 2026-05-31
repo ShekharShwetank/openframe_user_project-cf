@@ -1,0 +1,9 @@
+CARAVEL_ROOT: /home/ank/Desktop/WORK/T_4/CF_FPGA_testchip/caravel
+MCW_ROOT: null
+PDK: sky130A
+PDK_ROOT: /home/ank/Desktop/WORK/T_4/CF_FPGA_testchip/dependencies/pdks
+USER_PROJECT_ROOT: /home/ank/Desktop/WORK/T_4/CF_FPGA_testchip
+caravan: false
+clk: 25
+emailto:
+- null

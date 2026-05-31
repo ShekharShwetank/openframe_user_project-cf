@@ -1,0 +1,3 @@
+---
+Tests: 
+    - {name: sys_reset, sim: RTL}

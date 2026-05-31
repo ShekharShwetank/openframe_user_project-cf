@@ -1,0 +1,11 @@
+---
+Tests: 
+    - {name: all_ones, sim: RTL}
+    - {name: all_zeros, sim: RTL}
+    - {name: passthrough, sim: RTL}
+    - {name: addition, sim: RTL}
+    - {name: counter, sim: RTL}
+    - {name: sys_reset, sim: RTL}
+    - {name: multiplication, sim: RTL}
+    - {name: ram_32x4_2r_1w, sim: RTL}
+    - {name: register_file, sim: RTL}

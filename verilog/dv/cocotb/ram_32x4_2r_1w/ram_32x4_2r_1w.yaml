@@ -1,0 +1,3 @@
+---
+Tests: 
+    - {name: ram_32x4_2r_1w, sim: RTL}

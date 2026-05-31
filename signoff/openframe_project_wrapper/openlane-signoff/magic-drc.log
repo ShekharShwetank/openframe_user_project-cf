@@ -758,6 +758,6 @@ Loading DRC CIF style.
 No errors found.
 [INFO] COUNT: 0
 [INFO] Should be divided by 3 or 4
-[INFO] DRC Checking DONE (/home/ank/Desktop/WORK/T_4/openframe_user_project-cf/openlane/openframe_project_wrapper/runs/26_05_26_01_54/63-magic-drc/reports/drc_violations.magic.rpt)
-[INFO] Saving mag view with DRC errors (/home/ank/Desktop/WORK/T_4/openframe_user_project-cf/openlane/openframe_project_wrapper/runs/26_05_26_01_54/63-magic-drc/views/openframe_project_wrapper.drc.mag)
+[INFO] DRC Checking DONE (/home/ank/Desktop/WORK/T_4/CF_FPGA_testchip/openlane/openframe_project_wrapper/runs/26_05_26_01_54/63-magic-drc/reports/drc_violations.magic.rpt)
+[INFO] Saving mag view with DRC errors (/home/ank/Desktop/WORK/T_4/CF_FPGA_testchip/openlane/openframe_project_wrapper/runs/26_05_26_01_54/63-magic-drc/views/openframe_project_wrapper.drc.mag)
 [INFO] Saved

@@ -1,0 +1,3 @@
+---
+Tests: 
+    - {name: all_zeros, sim: RTL}

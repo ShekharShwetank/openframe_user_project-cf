@@ -1,0 +1,3 @@
+---
+Tests: 
+    - {name: register_file, sim: RTL}

@@ -1,15 +1,15 @@
-/home/ank/Desktop/WORK/T_4/openframe_user_project-cf/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:53: warning: already initialized constant DRC::DRCEngine::FEOL
-/home/ank/Desktop/WORK/T_4/openframe_user_project-cf/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:44: warning: previous definition of FEOL was here
-/home/ank/Desktop/WORK/T_4/openframe_user_project-cf/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:59: warning: already initialized constant DRC::DRCEngine::BEOL
-/home/ank/Desktop/WORK/T_4/openframe_user_project-cf/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:45: warning: previous definition of BEOL was here
-/home/ank/Desktop/WORK/T_4/openframe_user_project-cf/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:65: warning: already initialized constant DRC::DRCEngine::OFFGRID
-/home/ank/Desktop/WORK/T_4/openframe_user_project-cf/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:46: warning: previous definition of OFFGRID was here
-/home/ank/Desktop/WORK/T_4/openframe_user_project-cf/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:71: warning: already initialized constant DRC::DRCEngine::SEAL
-/home/ank/Desktop/WORK/T_4/openframe_user_project-cf/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:47: warning: previous definition of SEAL was here
-/home/ank/Desktop/WORK/T_4/openframe_user_project-cf/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:79: warning: already initialized constant DRC::DRCEngine::FLOATING_MET
-/home/ank/Desktop/WORK/T_4/openframe_user_project-cf/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:48: warning: previous definition of FLOATING_MET was here
-/home/ank/Desktop/WORK/T_4/openframe_user_project-cf/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:85: warning: already initialized constant DRC::DRCEngine::SRAM_EXCLUDE
-/home/ank/Desktop/WORK/T_4/openframe_user_project-cf/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:49: warning: previous definition of SRAM_EXCLUDE was here
+/home/ank/Desktop/WORK/T_4/CF_FPGA_testchip/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:53: warning: already initialized constant DRC::DRCEngine::FEOL
+/home/ank/Desktop/WORK/T_4/CF_FPGA_testchip/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:44: warning: previous definition of FEOL was here
+/home/ank/Desktop/WORK/T_4/CF_FPGA_testchip/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:59: warning: already initialized constant DRC::DRCEngine::BEOL
+/home/ank/Desktop/WORK/T_4/CF_FPGA_testchip/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:45: warning: previous definition of BEOL was here
+/home/ank/Desktop/WORK/T_4/CF_FPGA_testchip/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:65: warning: already initialized constant DRC::DRCEngine::OFFGRID
+/home/ank/Desktop/WORK/T_4/CF_FPGA_testchip/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:46: warning: previous definition of OFFGRID was here
+/home/ank/Desktop/WORK/T_4/CF_FPGA_testchip/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:71: warning: already initialized constant DRC::DRCEngine::SEAL
+/home/ank/Desktop/WORK/T_4/CF_FPGA_testchip/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:47: warning: previous definition of SEAL was here
+/home/ank/Desktop/WORK/T_4/CF_FPGA_testchip/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:79: warning: already initialized constant DRC::DRCEngine::FLOATING_MET
+/home/ank/Desktop/WORK/T_4/CF_FPGA_testchip/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:48: warning: previous definition of FLOATING_MET was here
+/home/ank/Desktop/WORK/T_4/CF_FPGA_testchip/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:85: warning: already initialized constant DRC::DRCEngine::SRAM_EXCLUDE
+/home/ank/Desktop/WORK/T_4/CF_FPGA_testchip/dependencies/pdks/sky130A/libs.tech/klayout/drc/sky130A_mr.drc:49: warning: previous definition of SRAM_EXCLUDE was here
 "input" in: sky130A_mr.drc:135
     Polygons (raw): 4120657 (flat)  1536 (hierarchical)
     Elapsed: 0.200s  Memory: 1156.00M
@@ -2550,7 +2550,7 @@ OFFGRID-ANGLES section
 "output" in: sky130A_mr.drc:896
     Edge pairs: 0 (flat)  0 (hierarchical)
     Elapsed: 0.000s  Memory: 5254.00M
-Writing report database: /home/ank/Desktop/WORK/T_4/openframe_user_project-cf/openlane/openframe_project_wrapper/runs/26_05_26_01_54/64-klayout-drc/reports/drc_violations.klayout.xml ..
+Writing report database: /home/ank/Desktop/WORK/T_4/CF_FPGA_testchip/openlane/openframe_project_wrapper/runs/26_05_26_01_54/64-klayout-drc/reports/drc_violations.klayout.xml ..
 Total elapsed: 912.450s  Memory: 4806.00M
  
 Cell exclusion list:

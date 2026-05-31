@@ -1,0 +1,3 @@
+---
+Tests: 
+    - {name: counter, sim: RTL}

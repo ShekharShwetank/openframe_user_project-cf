@@ -1,12 +1,12 @@
 {
   "project": {
-    "name": "openframe_user_project-cf",
+    "name": "CF_FPGA_testchip",
     "type": "openframe",
     "user": "shwetank-shekhar",
     "version": "2",
     "user_project_wrapper_hash": "44ef20e5b06b29460f567e66d0101b786858b7a18d5457c751d0f860003e33cf",
     "submission_state": "Draft",
-    "github_repo_url": "https://github.com/ShekharShwetank/openframe_user_project-cf",
+    "github_repo_url": "https://github.com/ShekharShwetank/CF_FPGA_testchip",
     "platform_project_id": "d3254559-f073-4b73-8f4e-fe7134b0474a"
   },
   "precheck": {
@@ -64,7 +64,7 @@
         "duration_s": 5.85,
         "details": "0 errors, 3 warnings across 44 GPIOs",
         "report": {
-          "report_relpath": "/home/ank/Desktop/WORK/T_4/openframe_user_project-cf/precheck_results/31_MAY_2026___05_13_48/outputs/reports/cvc.oeb.report",
+          "report_relpath": "/home/ank/Desktop/WORK/T_4/CF_FPGA_testchip/precheck_results/31_MAY_2026___05_13_48/outputs/reports/cvc.oeb.report",
           "design_type": "openframe",
           "gpios": [
             {

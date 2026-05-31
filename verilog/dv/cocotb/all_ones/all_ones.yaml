@@ -1,0 +1,3 @@
+---
+Tests: 
+    - {name: all_ones, sim: RTL}
