@@ -1,50 +1,96 @@
 {
     "DESIGN_NAME": "openframe_project_wrapper",
-    "VERILOG_DEFINES": "PnR",
+    "VERILOG_DEFINES": [
+        "PnR",
+        "REMOVE_MEDIUM_FABRIC",
+        "SYNTHESIS"
+    ],
     "VERILOG_FILES": [
-        "dir::/../../verilog/rtl/openframe_project_netlists.v",
-        "dir::/../../verilog/rtl/openframe_project_wrapper.v"
+        "dir::../../verilog/rtl/openframe_project_netlists.v",
+        "dir::../../verilog/rtl/openframe_project_wrapper.v",
+        "dir::../../ip/CF_gpio_config/rtl/CF_gpio_config.v",
+        "dir::../../ip/CF_owire_id/rtl/CF_owire_id.v",
+        "dir::../../ip/CF_owire_id/rtl/CF_owire_id_pad.v",
+        "dir::../../verilog/rtl/chip_core.sv",
+        "dir::../../verilog/rtl/fabulous/synchronizer.sv",
+        "dir::../../verilog/rtl/fabulous/fabric_spi_receiver.sv",
+        "dir::../../verilog/rtl/fabulous/fabric_spi_controller.sv",
+        "dir::../../verilog/rtl/fabulous/fabric_config.sv"
     ],
     "VERILOG_FILES_BLACKBOX": [
-        "dir::../../verilog/gl/user_proj_timer.v",
+        "dir::../../ip/small_fabric/vh/classic_fabric_chipfoundry_small.vh",
+        "dir::../../ip/large_fabric/vh/classic_fabric_chipfoundry_large.vh",
         "dir::../../verilog/gl/vccd1_connection.v",
         "dir::../../verilog/gl/vssd1_connection.v"
     ],
-    "EXTRA_LEFS": [
-        "dir::../../lef/user_proj_timer.lef",
-        "dir::../../lef/vccd1_connection.lef",
-        "dir::../../lef/vssd1_connection.lef"
-    ],
-    "EXTRA_GDS_FILES": [
-        "dir::../../gds/user_proj_timer.gds",
-        "dir::../../gds/vccd1_connection.gds",
-        "dir::../../gds/vssd1_connection.gds"
-    ],
-    "EXTRA_LIBS": "dir::../../lib/user_proj_timer.lib",
-    "EXTRA_SPEFS": [
-        "user_proj_timer",
-        "dir::../../spef/multicorner/user_proj_timer.min.spef",
-        "dir::../../spef/multicorner/user_proj_timer.nom.spef",
-        "dir::../../spef/multicorner/user_proj_timer.max.spef"
-    ],
+    "MACROS": {
+        "classic_fabric_chipfoundry_small": {
+            "gds": [
+                "dir::../../ip/small_fabric/gds/classic_fabric_chipfoundry_small.gds"
+            ],
+            "lef": [
+                "dir::../../ip/small_fabric/lef/classic_fabric_chipfoundry_small.lef"
+            ]
+        },
+        "classic_fabric_chipfoundry_large": {
+            "gds": [
+                "dir::../../ip/large_fabric/gds/classic_fabric_chipfoundry_large.gds"
+            ],
+            "lef": [
+                "dir::../../ip/large_fabric/lef/classic_fabric_chipfoundry_large.lef"
+            ]
+        },
+        "vccd1_connection": {
+            "gds": [
+                "dir::../../gds/vccd1_connection.gds"
+            ],
+            "lef": [
+                "dir::../../lef/vccd1_connection.lef"
+            ]
+        },
+        "vssd1_connection": {
+            "gds": [
+                "dir::../../gds/vssd1_connection.gds"
+            ],
+            "lef": [
+                "dir::../../lef/vssd1_connection.lef"
+            ]
+        }
+    },
     "MAX_TRANSITION_CONSTRAINT": 0.5,
     "ERROR_ON_NL_ASSIGN_STATEMENTS": 0,
     "QUIT_ON_SYNTH_CHECKS": 0,
     "FP_PDN_CHECK_NODES": 0,
-    "SYNTH_ELABORATE_ONLY": 1,
+    "SYNTH_ELABORATE_ONLY": 0,
     "PL_RANDOM_GLB_PLACEMENT": 1,
     "SYNTH_USE_PG_PINS_DEFINES": "USE_POWER_PINS",
-    "PL_RESIZER_DESIGN_OPTIMIZATIONS": 0,
-    "PL_RESIZER_TIMING_OPTIMIZATIONS": 0,
-    "GLB_RESIZER_TIMING_OPTIMIZATIONS": 0,
-    "GLB_RESIZER_DESIGN_OPTIMIZATIONS": 0,
-    "PL_RESIZER_BUFFER_INPUT_PORTS": 0,
-    "RUN_CTS": 0,
-    "FP_PDN_ENABLE_RAILS": 0,
-    "GRT_REPAIR_ANTENNAS": 0,
-    "RUN_HEURISTIC_DIODE_INSERTION": 0,
-    "RUN_FILL_INSERTION": 0,
-    "RUN_TAP_DECAP_INSERTION": 0,
+    "PL_RESIZER_DESIGN_OPTIMIZATIONS": 1,
+    "PL_RESIZER_TIMING_OPTIMIZATIONS": 1,
+    "GLB_RESIZER_TIMING_OPTIMIZATIONS": 1,
+    "GLB_RESIZER_DESIGN_OPTIMIZATIONS": 1,
+    "PL_RESIZER_BUFFER_INPUT_PORTS": 1,
+    "RUN_CTS": 1,
+    "FP_PDN_ENABLE_RAILS": 1,
+    "GRT_REPAIR_ANTENNAS": 1,
+    "RUN_HEURISTIC_DIODE_INSERTION": true,
+    "PDN_OBSTRUCTIONS": [
+        "met4 100 1790 280 2010",
+        "met4 1200 120 2154.96 1572.48",
+        "met4 130 1803 3031.68 4593.72"
+    ],
+    "RUN_FILL_INSERTION": 1,
+    "RUN_TAP_DECAP_INSERTION": 1,
+    "CLOCK_PORT": "gpio_in[38]",
+    "CLOCK_PERIOD": 40.0,
+    "PL_TARGET_DENSITY_PCT": 20,
+    "GRT_ALLOW_CONGESTION": 1,
+    "GRT_OVERFLOW_ITERATIONS": 120,
+    "PL_MACRO_HALO": [
+        10,
+        10
+    ],
+    "PNR_SDC_FILE": "dir::base.sdc",
+    "SIGNOFF_SDC_FILE": "dir::signoff.sdc",
     "FP_PDN_VPITCH": 40,
     "FP_PDN_HPITCH": 40,
     "FP_PDN_VOFFSET": 18.43,
@@ -72,11 +118,11 @@
     "DIE_AREA": "0 0 3166.63 4766.630",
     "CORE_AREA": "40 40 3126.63 4726.630",
     "RUN_IRDROP_REPORT": 0,
-    "FP_PDN_MACRO_HOOKS": "mprj vccd1 vssd1 vccd1 vssd1",
+    "FP_PDN_MACRO_HOOKS": "u_chip_core\\.i_classic_fabric_chipfoundry_small vccd1 vssd1 VPWR VGND,u_chip_core\\.i_classic_fabric_chipfoundry_large vccd1 vssd1 VPWR VGND",
     "FP_PDN_CFG": "dir::pdn_cfg.tcl",
     "FP_DEF_TEMPLATE": "dir::fixed_dont_change/openframe_project_wrapper.def",
     "MACRO_PLACEMENT_CFG": "dir::macro.cfg",
-    "RUN_LINTER": 0,
+    "RUN_LINTER": 1,
     "RUN_LVS": 0,
     "MAGIC_DEF_LABELS": 0,
     "MAGIC_EXT_USE_GDS": true,

@@ -27,13 +27,19 @@
 `ifndef PnR
 `ifdef SIM
 `define USE_POWER_PINS
+`define REMOVE_MEDIUM_FABRIC
 `endif
 `endif
 `define OPENFRAME_IO_PADS 44
 
 `ifndef PnR
     // `include "openframe_project_wrapper.v"
-    // `include "user_proj_timer.v"
+    // `include "chip_core.sv"
+    // `include "fabulous/synchronizer.sv"
+    // `include "fabulous/fabric_spi_receiver.sv"
+    // `include "fabulous/fabric_spi_controller.sv"
+    // `include "fabulous/fabric_config.sv"
+    // `include "../../ip/CF_gpio_config/rtl/CF_gpio_config.v"
     // `include "vccd1_connection.v"
     // `include "vssd1_connection.v"
 `endif

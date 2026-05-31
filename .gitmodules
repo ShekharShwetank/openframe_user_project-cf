@@ -1,0 +1,6 @@
+[submodule "ip/CF_gpio_config"]
+	path = ip/CF_gpio_config
+	url = https://github.com/chipfoundry/CF_gpio_config.git
+[submodule "ip/CF_owire_id"]
+	path = ip/CF_owire_id
+	url = https://github.com/chipfoundry/CF_owire_id.git

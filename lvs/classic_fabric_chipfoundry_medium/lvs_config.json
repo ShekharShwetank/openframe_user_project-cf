@@ -1,0 +1,86 @@
+{
+    "STD_CELL_LIBRARY": "sky130_fd_sc_hd",
+    "EXTRACT_TYPE": "analog",
+    "INCLUDE_CONFIGS": [
+        "$LVS_ROOT/tech/$PDK/lvs_config.base.json"
+    ],
+    "TOP_SOURCE": "classic_fabric_chipfoundry_medium",
+    "TOP_LAYOUT": "$TOP_SOURCE",
+    "EXTRACT_FLATGLOB": [
+        ""
+    ],
+    "EXTRACT_ABSTRACT": [
+        "E_IO",
+        "E_IO2",
+        "E_TT_IF",
+        "E_TT_IF2",
+        "LUT4x8_ha",
+        "MACC",
+        "NE_term",
+        "NW_term",
+        "N_IO",
+        "N_IO4",
+        "N_term_MACC",
+        "N_term_RegFile",
+        "N_term_single",
+        "RegFile",
+        "SE_term",
+        "SW_term",
+        "S_IO",
+        "S_IO4",
+        "S_WARMBOOT",
+        "S_term_MACC",
+        "S_term_RegFile",
+        "S_term_single",
+        "W_IO",
+        "W_IO2",
+        "W_TT_IF",
+        "W_TT_IF2"
+    ],
+    "EXTRACT_CREATE_SUBCUT": [
+        ""
+    ],
+    "LVS_FLATTEN": [
+        ""
+    ],
+    "LVS_NOFLATTEN": [
+        ""
+    ],
+    "LVS_IGNORE": [
+        ""
+    ],
+    "LVS_SPICE_FILES": [
+        ""
+    ],
+    "LVS_VERILOG_FILES": [
+        "$UPRJ_ROOT/lvs/defines.v",
+        "$UPRJ_ROOT/ip/tiles/E_IO/vh/E_IO.vh",
+        "$UPRJ_ROOT/ip/tiles/E_IO2/vh/E_IO2.vh",
+        "$UPRJ_ROOT/ip/tiles/E_TT_IF/vh/E_TT_IF.vh",
+        "$UPRJ_ROOT/ip/tiles/E_TT_IF2/vh/E_TT_IF2.vh",
+        "$UPRJ_ROOT/ip/tiles/LUT4x8_ha/vh/LUT4x8_ha.vh",
+        "$UPRJ_ROOT/ip/tiles/MACC/vh/MACC.vh",
+        "$UPRJ_ROOT/ip/tiles/NE_term/vh/NE_term.vh",
+        "$UPRJ_ROOT/ip/tiles/NW_term/vh/NW_term.vh",
+        "$UPRJ_ROOT/ip/tiles/N_IO/vh/N_IO.vh",
+        "$UPRJ_ROOT/ip/tiles/N_IO4/vh/N_IO4.vh",
+        "$UPRJ_ROOT/ip/tiles/N_term_MACC/vh/N_term_MACC.vh",
+        "$UPRJ_ROOT/ip/tiles/N_term_RegFile/vh/N_term_RegFile.vh",
+        "$UPRJ_ROOT/ip/tiles/N_term_single/vh/N_term_single.vh",
+        "$UPRJ_ROOT/ip/tiles/RegFile/vh/RegFile.vh",
+        "$UPRJ_ROOT/ip/tiles/SE_term/vh/SE_term.vh",
+        "$UPRJ_ROOT/ip/tiles/SW_term/vh/SW_term.vh",
+        "$UPRJ_ROOT/ip/tiles/S_IO/vh/S_IO.vh",
+        "$UPRJ_ROOT/ip/tiles/S_IO4/vh/S_IO4.vh",
+        "$UPRJ_ROOT/ip/tiles/S_WARMBOOT/vh/S_WARMBOOT.vh",
+        "$UPRJ_ROOT/ip/tiles/S_term_MACC/vh/S_term_MACC.vh",
+        "$UPRJ_ROOT/ip/tiles/S_term_RegFile/vh/S_term_RegFile.vh",
+        "$UPRJ_ROOT/ip/tiles/S_term_single/vh/S_term_single.vh",
+        "$UPRJ_ROOT/ip/tiles/W_IO/vh/W_IO.vh",
+        "$UPRJ_ROOT/ip/tiles/W_IO2/vh/W_IO2.vh",
+        "$UPRJ_ROOT/ip/tiles/W_TT_IF/vh/W_TT_IF.vh",
+        "$UPRJ_ROOT/ip/tiles/W_TT_IF2/vh/W_TT_IF2.vh",
+        "$UPRJ_ROOT/ip/medium_fabric/pnl/classic_fabric_chipfoundry_medium.pnl.v"
+    ],
+    "LAYOUT_FILE": "$UPRJ_ROOT/ip/medium_fabric/gds/$TOP_LAYOUT.gds"
+}
