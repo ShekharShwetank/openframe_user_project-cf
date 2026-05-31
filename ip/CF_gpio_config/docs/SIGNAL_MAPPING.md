@@ -1,0 +1,113 @@
+# Signal Mapping Reference
+
+## Mode-to-Signal Truth Table
+
+| MODE | Name | dm[2:0] | inp_dis | oeb | out_val |
+|:----:|------|:-------:|:-------:|:---:|:-------:|
+| 0 | ANALOG | 000 | 1 | 1 | 0 |
+| 1 | INPUT | 001 | 0 | 1 | 0 |
+| 2 | INPUT_PD | 111 | 0 | 0 | 0 |
+| 3 | INPUT_PU | 111 | 0 | 0 | 1 |
+| 4 | OUTPUT | 110 | 1 | 0 | io_out |
+| 5 | BIDIR | 110 | 0 | io_oeb | io_out |
+
+**Note on pull modes (INPUT_PD, INPUT_PU):** The Sky130 GPIO pad requires `oeb=0` (output enabled) with the appropriate `dm` and `out_val` settings to activate the weak pull resistors. This is because the pull behavior comes from the output driver stage operating in a weak drive mode.
+
+## Fixed Configuration Signals
+
+These signals are set to safe defaults for all modes:
+
+| Signal | Value | Description |
+|--------|:-----:|-------------|
+| `gpio_analog_en` | 0 | Enable amuxbus_a/b as ground/power output |
+| `gpio_analog_sel` | 0 | Choose amuxbus_a or amuxbus_b for ground/power |
+| `gpio_analog_pol` | 0 | Choose ground or power for amuxbus_a/b |
+| `gpio_ib_mode_sel` | 0 | Input buffer mode: VDDIO |
+| `gpio_vtrip_sel` | 0 | Trip point: CMOS |
+| `gpio_slow_sel` | 0 | Slew rate: fast |
+| `gpio_holdover` | 0 | No holdover |
+
+## Sky130 Drive Mode Reference
+
+The `dm[2:0]` signal controls the Sky130 pad's output driver. The Sky130 GPIO uses `bufif1` primitives with specific drive strengths:
+
+| dm[2:0] | Description | Effect with oeb=0 | Use |
+|:-------:|-------------|-------------------|-----|
+| 000 | Hi-Z | Disabled | Analog mode |
+| 001 | Input only | No output driver | Digital input, no pull |
+| 111 | pull1, pull0 | weak pull-pull  | INPUT_PU (with out=1), INPUT_PD (with out=0)|
+| 110 | strong1, strong0 | Strong push-pull | OUTPUT, BIDIR |
+
+**How pull resistors work:**
+- **Pull-UP (INPUT_PU):** dm=111, oeb=0, out=1 → weak drive to 1 (~5kΩ pull-up)
+- **Pull-DOWN (INPUT_PD):** dm=111, oeb=0, out=0 → weak drive to 0 (~5kΩ pull-down)
+
+## Signal Descriptions
+
+### User Interface Signals
+
+| Signal | Width | Direction | Description |
+|--------|:-----:|-----------|-------------|
+| `io_out` | 1 | input | Data to drive the pad. Connect your output signal here. |
+| `io_in` | 1 | output | Data from the pad. Direct passthrough from gpio_in. |
+| `io_oeb` | 1 | input | Output enable bar. Only used in BIDIR mode. 0=drive, 1=hi-z. |
+
+### Openframe Interface Signals
+
+| Signal | Width | Direction | Connect to |
+|--------|:-----:|-----------|------------|
+| `gpio_zero` | 1 | input | `gpio_loopback_zero[n]` |
+| `gpio_one` | 1 | input | `gpio_loopback_one[n]` |
+| `gpio_in` | 1 | input | `gpio_in[n]` |
+| `gpio_dm` | 3 | output | `{gpio_dm2[n], gpio_dm1[n], gpio_dm0[n]}` |
+| `gpio_inp_dis` | 1 | output | `gpio_inp_dis[n]` |
+| `gpio_oeb_out` | 1 | output | `gpio_oeb[n]` |
+| `gpio_analog_en` | 1 | output | `gpio_analog_en[n]` |
+| `gpio_analog_sel` | 1 | output | `gpio_analog_sel[n]` |
+| `gpio_analog_pol` | 1 | output | `gpio_analog_pol[n]` |
+| `gpio_ib_mode_sel` | 1 | output | `gpio_ib_mode_sel[n]` |
+| `gpio_vtrip_sel` | 1 | output | `gpio_vtrip_sel[n]` |
+| `gpio_slow_sel` | 1 | output | `gpio_slow_sel[n]` |
+| `gpio_holdover` | 1 | output | `gpio_holdover[n]` |
+
+## Mode Behavior Details
+
+### ANALOG (MODE=0)
+
+- Digital input buffer disabled (`inp_dis=1`)
+- Digital output buffer disabled (`oeb=1`, `dm=000`)
+
+### INPUT (MODE=1)
+
+- Digital input buffer enabled (`inp_dis=0`)
+- No output driver (`oeb=1`)
+- No pull resistor (`dm=001`)
+- Pad floats when not driven externally
+
+### INPUT_PD (MODE=2)
+
+- Digital input buffer enabled (`inp_dis=0`)
+- Output driver enabled for weak pull (`oeb=0`, `out=0`)
+- Weak push-pull driver (`dm=111`)
+- Pad defaults low (~5kΩ pull-down) when not driven externally
+
+### INPUT_PU (MODE=3)
+
+- Digital input buffer enabled (`inp_dis=0`)
+- Output driver enabled for weak pull (`oeb=0`, `out=1`)
+- Weak push-pull driver (`dm=111`)
+- Pad defaults high (~5kΩ pull-up) when not driven externally
+
+### OUTPUT (MODE=4)
+
+- Digital input buffer disabled (`inp_dis=1`)
+- Strong push-pull driver (`dm=110`, `oeb=0`)
+- Always driving based on `io_out`
+
+### BIDIR (MODE=5)
+
+- Digital input buffer always enabled (`inp_dis=0`)
+- Strong push-pull driver when enabled (`dm=110`)
+- Direction controlled by `io_oeb`:
+  - `io_oeb=0`: Driving pad with `io_out`, same logic on `io_in`
+  - `io_oeb=1`: Hi-Z, reading pad via `io_in`

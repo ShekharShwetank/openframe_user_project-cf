@@ -27,6 +27,7 @@
 `ifndef PnR
 `ifdef SIM
 `define USE_POWER_PINS
+`define REMOVE_MEDIUM_FABRIC
 `endif
 `endif
 `define OPENFRAME_IO_PADS 44

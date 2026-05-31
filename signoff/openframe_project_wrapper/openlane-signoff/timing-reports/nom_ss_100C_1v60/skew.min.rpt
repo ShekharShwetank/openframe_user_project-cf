@@ -4,6 +4,11 @@ Clock Skew (Hold)
 ============================================================================
 ======================= nom_ss_100C_1v60 Corner ===================================
 
-Clock __VIRTUAL_CLK__
-No launch/capture paths found.
+Clock clk
+2.863061 source latency _3979_/CLK ^
+-4.207882 target latency _3724_/CLK ^
+-0.100000 clock uncertainty
+-0.233602 CRPR
+--------------
+-1.678423 hold skew
 

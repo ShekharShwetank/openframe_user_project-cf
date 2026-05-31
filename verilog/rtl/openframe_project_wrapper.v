@@ -104,11 +104,12 @@ module openframe_project_wrapper (
 );
         // Internal wires
         wire spi_csn, spi_sclk, spi_mosi;
-        wire spi_miso, cfg_done, config_busy;
+        (* keep *) wire spi_miso;
+        wire cfg_done, config_busy;
         wire spi_sclk_o, spi_sclk_en_o, spi_cs_n_o, spi_cs_n_en_o;
         wire spi_mosi_o, spi_mosi_en_o, spi_miso_o, spi_miso_en_o;
         wire [35:0] bidir_in, bidir_out, bidir_oe;
-        wire [1:0] fpga_select;  // Routed from GPIO 42-43
+        wire [1:0] fpga_select;  // Routed from GPIO 25-26
 
         // CF_owire_id_shared wires (1-Wire chip-ID on GPIO[0])
         wire owire_user_in;
@@ -118,17 +119,28 @@ module openframe_project_wrapper (
             .clk_i(gpio_in[38]),     // Connected directly to input
             .rst_ni(resetb_l),
             .spi_mode_i(1'b1),           // Passive SPI receiver
-            .fpga_select_i(fpga_select), // Dynamic select via GPIO 42-43
-            .spi_sclk_i(spi_sclk), .spi_sclk_o(spi_sclk_o), .spi_sclk_en_o(spi_sclk_en_o),
-            .spi_cs_n_i(spi_csn), .spi_cs_n_o(spi_cs_n_o), .spi_cs_n_en_o(spi_cs_n_en_o),
-            .spi_mosi_i(spi_mosi), .spi_mosi_o(spi_mosi_o), .spi_mosi_en_o(spi_mosi_en_o),
-            .spi_miso_i(1'b0), .spi_miso_o(spi_miso), .spi_miso_en_o(spi_miso_en_o),
-            .config_busy_o(config_busy), .config_done_o(cfg_done),
-            .bidir_in(bidir_in), .bidir_out(bidir_out), .bidir_oe(bidir_oe)
+            .fpga_select_i(fpga_select), // Dynamic select via GPIO 25-26
+            .spi_sclk_i(spi_sclk), 
+            .spi_sclk_o(spi_sclk_o), 
+            .spi_sclk_en_o(spi_sclk_en_o),
+            .spi_cs_n_i(spi_csn), 
+            .spi_cs_n_o(spi_cs_n_o), 
+            .spi_cs_n_en_o(spi_cs_n_en_o),
+            .spi_mosi_i(spi_mosi), 
+            .spi_mosi_o(spi_mosi_o), 
+            .spi_mosi_en_o(spi_mosi_en_o),
+            .spi_miso_i(1'b0), 
+            .spi_miso_o(spi_miso), 
+            .spi_miso_en_o(spi_miso_en_o),
+            .config_busy_o(config_busy), 
+            .config_done_o(cfg_done),
+            .bidir_in(bidir_in), 
+            .bidir_out(bidir_out), 
+            .bidir_oe(bidir_oe)
         );
 
-	(* keep *) vccd1_connection vccd1_connection_inst ();
-	(* keep *) vssd1_connection vssd1_connection_inst ();
+	(* keep *) vccd1_connection vccd1_connection ();
+	(* keep *) vssd1_connection vssd1_connection ();
 
         // CF_gpio_config modes
         // GPIO 0: CF_owire_id_shared (1-Wire chip-ID + fabric bidir[0] open-drain sharing)

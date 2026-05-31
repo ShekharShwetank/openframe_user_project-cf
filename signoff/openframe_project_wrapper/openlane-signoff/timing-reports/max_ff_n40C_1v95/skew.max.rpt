@@ -4,6 +4,11 @@ Clock Skew (Setup)
 ============================================================================
 ======================= max_ff_n40C_1v95 Corner ===================================
 
-Clock __VIRTUAL_CLK__
-No launch/capture paths found.
+Clock clk
+1.789027 source latency _4017_/CLK ^
+-1.193081 target latency _3979_/CLK ^
+0.100000 clock uncertainty
+-0.035229 CRPR
+--------------
+0.660716 setup skew
 

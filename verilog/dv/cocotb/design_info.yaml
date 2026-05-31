@@ -1,9 +1,0 @@
-CARAVEL_ROOT: /home/ank/Desktop/WORK/T_4/openframe_user_project-cf/caravel
-MCW_ROOT: null
-PDK: sky130A
-PDK_ROOT: /home/ank/Desktop/WORK/T_4/openframe_user_project-cf/dependencies/pdks
-USER_PROJECT_ROOT: /home/ank/Desktop/WORK/T_4/openframe_user_project-cf
-caravan: false
-clk: 25
-emailto:
-- null

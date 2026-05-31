@@ -4,6 +4,11 @@ Clock Skew (Hold)
 ============================================================================
 ======================= min_tt_025C_1v80 Corner ===================================
 
-Clock __VIRTUAL_CLK__
-No launch/capture paths found.
+Clock clk
+1.579898 source latency _3979_/CLK ^
+-2.345360 target latency _3598_/CLK ^
+-0.100000 clock uncertainty
+-0.075302 CRPR
+--------------
+-0.940763 hold skew
 

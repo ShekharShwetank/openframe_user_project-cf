@@ -10,7 +10,8 @@
 		""
 	],
 	"EXTRACT_ABSTRACT": [
-		""
+		"classic_fabric_chipfoundry_small",
+		"classic_fabric_chipfoundry_large"
 	],
 	"EXTRACT_CREATE_SUBCUT": [
 		""
@@ -29,9 +30,11 @@
 		""
 	],
 	"LVS_VERILOG_FILES": [
+		"$UPRJ_ROOT/lvs/defines.v",
 		"$UPRJ_ROOT/verilog/gl/vccd1_connection.v",
 		"$UPRJ_ROOT/verilog/gl/vssd1_connection.v",
-		"$UPRJ_ROOT/verilog/gl/user_proj_timer.v",
+		"$UPRJ_ROOT/ip/large_fabric/vh/classic_fabric_chipfoundry_large.vh",
+		"$UPRJ_ROOT/ip/small_fabric/vh/classic_fabric_chipfoundry_small.vh",
 		"$UPRJ_ROOT/verilog/gl/$TOP_SOURCE.v"
 	],
 	"LAYOUT_FILE": "$UPRJ_ROOT/gds/$TOP_LAYOUT.gds"

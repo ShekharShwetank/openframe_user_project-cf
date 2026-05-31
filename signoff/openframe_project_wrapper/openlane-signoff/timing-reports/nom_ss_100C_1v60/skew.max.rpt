@@ -4,6 +4,11 @@ Clock Skew (Setup)
 ============================================================================
 ======================= nom_ss_100C_1v60 Corner ===================================
 
-Clock __VIRTUAL_CLK__
-No launch/capture paths found.
+Clock clk
+4.190370 source latency _4017_/CLK ^
+-2.863061 target latency _3979_/CLK ^
+0.100000 clock uncertainty
+-0.155807 CRPR
+--------------
+1.271502 setup skew
 

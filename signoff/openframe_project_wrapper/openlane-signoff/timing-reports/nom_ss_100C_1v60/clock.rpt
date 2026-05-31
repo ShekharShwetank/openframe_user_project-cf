@@ -1,42 +1,42 @@
-Clock: __VIRTUAL_CLK__
-Sources: 
+Clock: clk
+Sources: gpio_in[38] 
 Generated: no
 Virtual: yes
 Propagated: no
-Period: 10.000000
+Period: 40.000000
 
 ===========================================================================
 report_clock_properties
 ============================================================================
 Clock                   Period          Waveform
 ----------------------------------------------------
-__VIRTUAL_CLK__      10.000000    0.000000  5.000000
+clk                  40.000000    0.000000 20.000000
 
 ===========================================================================
 report_clock_latency
 ============================================================================
-Clock __VIRTUAL_CLK__
+Clock clk
 rise -> rise
     min     max
 0.000000 0.000000 source latency
-2.904738         network latency mprj/wb_clk_i
-        2.904738 network latency mprj/wb_clk_i
+2.755651         network latency _3849_/CLK
+        4.333962 network latency _3639_/CLK
 ---------------
-2.904738 2.904738 latency
-        0.000000 skew
+2.755651 4.333962 latency
+        1.578311 skew
 
-rise -> fall
+fall -> fall
     min     max
 0.000000 0.000000 source latency
-2.548752         network latency mprj/wb_clk_i
-        2.548752 network latency mprj/wb_clk_i
+2.596032         network latency _3849_/CLK
+        4.022626 network latency _3639_/CLK
 ---------------
-2.548752 2.548752 latency
-        0.000000 skew
+2.596032 4.022626 latency
+        1.426594 skew
 
 
 
 ===========================================================================
 report_clock_min_period
 ============================================================================
-__VIRTUAL_CLK__ period_min = 0.00 fmax = inf
+clk period_min = 16.59 fmax = 60.29

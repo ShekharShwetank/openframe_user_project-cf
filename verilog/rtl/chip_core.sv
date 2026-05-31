@@ -744,19 +744,7 @@ module chip_core #(
         .Tile_X14Y11_A_EN_top  (large_io_east_oe_o[10]),
         .Tile_X14Y12_A_OUT_top (large_io_east_in_i[11]),
         .Tile_X14Y12_A_IN_top  (large_io_east_out_o[11]),
-        .Tile_X14Y12_A_EN_top  (large_io_east_oe_o[11]),
-        .Tile_X14Y1_B_OUT_top  (1'b0), .Tile_X14Y1_B_IN_top  (), .Tile_X14Y1_B_EN_top  (),
-        .Tile_X14Y2_B_OUT_top  (1'b0), .Tile_X14Y2_B_IN_top  (), .Tile_X14Y2_B_EN_top  (),
-        .Tile_X14Y3_B_OUT_top  (1'b0), .Tile_X14Y3_B_IN_top  (), .Tile_X14Y3_B_EN_top  (),
-        .Tile_X14Y4_B_OUT_top  (1'b0), .Tile_X14Y4_B_IN_top  (), .Tile_X14Y4_B_EN_top  (),
-        .Tile_X14Y5_B_OUT_top  (1'b0), .Tile_X14Y5_B_IN_top  (), .Tile_X14Y5_B_EN_top  (),
-        .Tile_X14Y6_B_OUT_top  (1'b0), .Tile_X14Y6_B_IN_top  (), .Tile_X14Y6_B_EN_top  (),
-        .Tile_X14Y7_B_OUT_top  (1'b0), .Tile_X14Y7_B_IN_top  (), .Tile_X14Y7_B_EN_top  (),
-        .Tile_X14Y8_B_OUT_top  (1'b0), .Tile_X14Y8_B_IN_top  (), .Tile_X14Y8_B_EN_top  (),
-        .Tile_X14Y9_B_OUT_top  (1'b0), .Tile_X14Y9_B_IN_top  (), .Tile_X14Y9_B_EN_top  (),
-        .Tile_X14Y10_B_OUT_top (1'b0), .Tile_X14Y10_B_IN_top (), .Tile_X14Y10_B_EN_top (),
-        .Tile_X14Y11_B_OUT_top (1'b0), .Tile_X14Y11_B_IN_top (), .Tile_X14Y11_B_EN_top (),
-        .Tile_X14Y12_B_OUT_top (1'b0), .Tile_X14Y12_B_IN_top (), .Tile_X14Y12_B_EN_top ()
+        .Tile_X14Y12_A_EN_top  (large_io_east_oe_o[11])
     );
 
 endmodule

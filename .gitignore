@@ -16,3 +16,13 @@ runs/
 lvs_results/
 __pycache__/
 openlane/.venv/
+
+# Large generated physical design files
+*.gds
+*.mag
+*.def
+verilog/gl/openframe_project_wrapper.v
+
+# Simulation binaries and outputs
+*.vvp
+verilog/dv/cocotb/sim/

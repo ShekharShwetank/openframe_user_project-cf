@@ -4,6 +4,11 @@ Clock Skew (Setup)
 ============================================================================
 ======================= nom_tt_025C_1v80 Corner ===================================
 
-Clock __VIRTUAL_CLK__
-No launch/capture paths found.
+Clock clk
+2.449158 source latency _4017_/CLK ^
+-1.684822 target latency _3979_/CLK ^
+0.100000 clock uncertainty
+-0.079322 CRPR
+--------------
+0.785014 setup skew
 
